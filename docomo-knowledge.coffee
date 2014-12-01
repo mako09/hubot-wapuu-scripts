@@ -8,7 +8,7 @@
 #   HUBOT_DOCOMO_DIALOGUE_API_KEY
 #
 # Commands:
-#   教えて <question> - 知識Q&A(docomo API)に質問を投げ、回答を得る
+#   hubot 教えて <question> - 知識Q&A(docomo API)に質問を投げ、回答を得る
 #
 # Author:
 #   Mako N

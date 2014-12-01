@@ -9,7 +9,7 @@
 #   HUBOT_DOCOMO_DIALOGUE_API_KEY
 #
 # Commands:
-#   雑談 <message> - 雑談対話(docomo API)
+#   hubot 雑談 <message> - 雑談対話(docomo API)
 #
 # Notes:
 #   たまに無視して沈黙します。
