@@ -31,7 +31,7 @@ module.exports = (robot) ->
           for key, answers of JSON.parse(body).answers
             text = "     ☞ #{answers.answerText}"
             text += " --- [#{answers.linkText}]" unless answers.linkText is null
-            text += "(#{answers.linkUrl})" unless answers.linkUrl is null
+            text += "( #{answers.linkUrl} )" unless answers.linkUrl is null or answers.linkUrl is answers.answerText
 
             res.send text
 
