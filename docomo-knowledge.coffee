@@ -13,6 +13,11 @@
 # Author:
 #   Mako N
 #
+# License:
+#   Copyright (c) 2014 Mako N <mako@pasero.net>
+#   Released under the MIT license
+#   http://opensource.org/licenses/mit-license.php
+#
 module.exports = (robot) ->
   robot.respond /(?:(?:(?:、)?(?:教|おし)えて(?:、|。)?)|(?:teach me))\s*(.*)/, (res) ->
     message = res.match[1]

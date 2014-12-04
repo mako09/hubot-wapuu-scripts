@@ -18,7 +18,12 @@
 #
 # Author:
 #   Mako N
-
+#
+# License:
+#   Copyright (c) 2014 Mako N <mako@pasero.net>
+#   Released under the MIT license
+#   http://opensource.org/licenses/mit-license.php
+#
 module.exports = (robot) ->
   
   robot.brain.data.memorandum =

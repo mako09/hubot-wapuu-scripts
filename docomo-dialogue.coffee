@@ -17,7 +17,12 @@
 #   
 # Author:
 #   bouzuya <m@bouzuya.net>
-#   Mako N
+#   Mako N <mako@pasero.net>
+#
+# License:
+#   Copyright (c) 2014 bouzuya, Mako N
+#   Released under the MIT license
+#   http://opensource.org/licenses/mit-license.php
 #
 module.exports = (robot) ->
   MODE = 'docomo_dialogue'
