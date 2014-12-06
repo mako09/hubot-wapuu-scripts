@@ -18,3 +18,16 @@ module.exports = (robot) ->
 
   robot.respond /(調子どう|元気)/i, (msg) ->
     msg.send "はい、元気です。"
+
+## time を美人時計に
+##  from https://github.com/sasarky/ipuhubot-slack
+#
+  robot.respond /TIME$/i, (msg) ->
+    places = [ 'jp', 'taiwan', 'hawaii', 'thailand', 'binan' ]
+    place = places[Math.floor(Math.random() * places.length)]
+    d = new Date
+    hour = ('0' + d.getHours()).slice(-2)
+    minute = ('0' + d.getMinutes()).slice(-2)
+    img = "http://www.bijint.com/" + place + "/tokei_images/" + hour + minute + ".jpg"
+    msg.send img
+    msg.finish()
