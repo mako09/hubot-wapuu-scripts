@@ -27,22 +27,34 @@
 module.exports = (robot) ->
   status  = {}
 
-  robot.respond /(?:雑談\s+|(?:(?:(?:様|さま|サマ|殿|どの|さん|サン|ちゃん|チャン|氏|君|くん|クン|たん|タン|先生|せんせ(?:い|ー))(?:、|。|!|！)?))|(?:(?:、|。|!|！)\s*))(.*)/, (res) ->
+  robot.respond /(?:雑談\s+|(?:(?:(様|さま|サマ|殿|どの|さん|サン|はん|どん|やん|ちゃん|チャン|氏|君|くん|クン|たん|タン|先生|せんせ(?:い|ー))(?:、|。|!|！)?))|(?:(?:、|。|!|！)\s*))(.*)/, (res) ->
     p = parseFloat(process.env.HUBOT_DOCOMO_DIALOGUE_P ? '0.3')
     return unless Math.random() < p
-    message = res.match[1]
+    message = res.match[2]
     return if message is ''
-    now = new Date().getTime()
+
+    d = new Date
+    now = d.getTime()
     if now - status['time'] > 2 * 60 * 1000
       status =
         "id": ''
         "mode": ''
+
+    if /(たん|タン)/.test(res.match[1])
+      status = "t": 30
+    else if /(はん|どん|やん)/.test(res.match[1])
+      status = "t": 20
+    else if d.getDay() is 2
+    # 火曜日は関西弁
+      status = "t": 20
+    else
+      status = "t": ''
+
     res
       .http 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue'
       .query APIKEY: process.env.HUBOT_DOCOMO_DIALOGUE_API_KEY
       .header 'Content-Type', 'application/json'
-      .header 'Accept', 'application/json'
-      .post(JSON.stringify({ utt: message, context: status['id'], mode: status['mode'] })) (err, response, body) ->
+      .post(JSON.stringify({ utt: message, context: status['id'], mode: status['mode'], t: status['t'] })) (err, response, body) ->
         if err?
           console.log "Encountered an error #{err}"
         else
