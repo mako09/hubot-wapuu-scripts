@@ -23,21 +23,17 @@ module.exports = (robot) ->
     message = res.match[1]
     return if message is ''
     res
-      .http("https://api.apigw.smt.docomo.ne.jp/knowledgeQA/v1/ask")
-      .query(APIKEY: process.env.HUBOT_DOCOMO_DIALOGUE_API_KEY)
-      .query(q: message)
+      .http 'https://api.apigw.smt.docomo.ne.jp/knowledgeQA/v1/ask'
+      .query APIKEY: process.env.HUBOT_DOCOMO_DIALOGUE_API_KEY
+      .query q: message
       .get() (err, response, body) ->
-        if err
+        if err?
           res.send "Encountered an error #{err}"
         else
-
           res.send JSON.parse(body).message.textForDisplay
-
           for key, answers of JSON.parse(body).answers
             text = "     ☞ #{answers.answerText}"
             text += " --- [#{answers.linkText}]" unless answers.linkText is null
             text += "( #{answers.linkUrl} )" unless answers.linkUrl is null or answers.linkUrl is answers.answerText
-
             res.send text
-
     res.finish()

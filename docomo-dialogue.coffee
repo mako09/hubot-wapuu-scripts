@@ -28,7 +28,7 @@ module.exports = (robot) ->
   MODE = 'docomo_dialogue'
 
   getMode = () ->
-    status = robot.brain.get(MODE) or { "time": 0 }
+    status = robot.brain.get MODE or { "time": 0 }
     now = new Date().getTime()
     if now - status['time'] > 2 * 60 * 1000
       status = 
@@ -44,17 +44,17 @@ module.exports = (robot) ->
     return if message is ''
     status = getMode()
     res
-      .http("https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue")
-      .query(APIKEY: process.env.HUBOT_DOCOMO_DIALOGUE_API_KEY)
-      .header('Content-Type', 'application/json')
-      .header('Accept', 'application/json')
+      .http 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue'
+      .query APIKEY: process.env.HUBOT_DOCOMO_DIALOGUE_API_KEY
+      .header 'Content-Type', 'application/json'
+      .header 'Accept', 'application/json'
       .post(JSON.stringify({ utt: message, context: status['id'], mode: status['mode'] })) (err, response, body) ->
-        if err
+        if err?
           console.log "Encountered an error #{err}"
         else
           res.send JSON.parse(body).utt
           status =
             "time": new Date().getTime()
-            "id": "#{JSON.parse(body).context}"
-            "mode": "#{JSON.parse(body).mode}"
+            "id": JSON.parse(body).context
+            "mode": JSON.parse(body).mode
           robot.brain.set MODE, status
