@@ -25,24 +25,18 @@
 #   http://opensource.org/licenses/mit-license.php
 #
 module.exports = (robot) ->
-  MODE = 'docomo_dialogue'
-
-  getMode = () ->
-    status = robot.brain.get MODE or { "time": 0 }
-    now = new Date().getTime()
-    if now - status['time'] > 2 * 60 * 1000
-      status = 
-        "time": now
-        "id": ''
-        "mode": ''
-    return status
+  status  = {}
 
   robot.respond /(?:雑談\s+|(?:(?:(?:様|さま|サマ|殿|どの|さん|サン|ちゃん|チャン|氏|君|くん|クン|たん|タン|先生|せんせ(?:い|ー))(?:、|。|!|！)?))|(?:(?:、|。|!|！)\s*))(.*)/, (res) ->
     p = parseFloat(process.env.HUBOT_DOCOMO_DIALOGUE_P ? '0.3')
     return unless Math.random() < p
     message = res.match[1]
     return if message is ''
-    status = getMode()
+    now = new Date().getTime()
+    if now - status['time'] > 2 * 60 * 1000
+      status =
+        "id": ''
+        "mode": ''
     res
       .http 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue'
       .query APIKEY: process.env.HUBOT_DOCOMO_DIALOGUE_API_KEY
@@ -54,7 +48,6 @@ module.exports = (robot) ->
         else
           res.send JSON.parse(body).utt
           status =
-            "time": new Date().getTime()
+            "time": now
             "id": JSON.parse(body).context
             "mode": JSON.parse(body).mode
-          robot.brain.set MODE, status
