@@ -28,6 +28,6 @@ module.exports = (robot) ->
     d = new Date
     hour = ('0' + d.getHours()).slice(-2)
     minute = ('0' + d.getMinutes()).slice(-2)
-    img = "http://www.bijint.com/" + place + "/tokei_images/" + hour + minute + ".jpg"
+    img = "http://www.bijint.com/assets/pict/" + place + "/pc/" + hour + minute + ".jpg"
     msg.send img
     msg.finish()
